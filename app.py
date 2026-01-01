@@ -77,6 +77,37 @@ if submitted:
     })
     st.success("Purchase logged successfully!")
 
+def eco_score(total_impact):
+    # Simple, interpretable score
+    score = 100 - (total_impact / 20)
+    return max(0, min(100, round(score)))
+
+def impact_category(total_impact):
+    if total_impact < 500:
+        return "🟢 Low Impact"
+    elif total_impact < 1500:
+        return "🟡 Medium Impact"
+    else:
+        return "🔴 High Impact"
+
+# Qualitative insights
+st.markdown("### 📈 Impact Insights")
+
+col3, col4, col5 = st.columns(3)
+
+col3.metric("🎯 Eco Score", f"{eco_score(total_impact)} / 100")
+col4.metric("🧭 Impact Level", impact_category(total_impact))
+
+if prev_month_impact > 0:
+    delta = total_impact - prev_month_impact
+    trend = "lower" if delta < 0 else "higher"
+    col5.info(
+        f"This month’s impact is {trend} than last month "
+        f"by {abs(round(delta, 2))} units."
+    )
+else:
+    col5.info("No data from last month yet.")
+
 # ---------------- MONTHLY DASHBOARD ----------------
 st.subheader("📊 Monthly Dashboard")
 
