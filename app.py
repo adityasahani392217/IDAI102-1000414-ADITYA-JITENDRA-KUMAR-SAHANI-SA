@@ -57,6 +57,24 @@ def assign_badge(total_impact):
     else:
         return "⚠️ High Impact Month"
 
+def eco_score(total_impact):
+    score = 100 - (total_impact / 20)
+    return max(0, min(100, round(score)))
+
+def impact_category(total_impact):
+    if total_impact < 500:
+        return "🟢 Low Impact"
+    elif total_impact < 1500:
+        return "🟡 Medium Impact"
+    else:
+        return "🔴 High Impact"
+
+def previous_month_str():
+    now = datetime.now()
+    if now.month == 1:
+        return f"{now.year - 1}-12"
+    return f"{now.year}-{now.month - 1:02d}"
+
 # ---------------- INPUT FORM ----------------
 st.subheader("🛒 Add a Purchase")
 
@@ -77,24 +95,30 @@ if submitted:
     })
     st.success("Purchase logged successfully!")
 
-def eco_score(total_impact):
-    # Simple, interpretable score
-    score = 100 - (total_impact / 20)
-    return max(0, min(100, round(score)))
+# ---------------- MONTHLY DASHBOARD ----------------
+st.subheader("📊 Monthly Dashboard")
 
-def impact_category(total_impact):
-    if total_impact < 500:
-        return "🟢 Low Impact"
-    elif total_impact < 1500:
-        return "🟡 Medium Impact"
-    else:
-        return "🔴 High Impact"
+current_month = datetime.now().strftime("%Y-%m")
+monthly_purchases = [
+    p for p in st.session_state.purchases if p["month"] == current_month
+]
 
-# Qualitative insights
+total_spend = sum(p["price"] for p in monthly_purchases)
+total_impact = sum(p["impact"] for p in monthly_purchases)
+
+col1, col2 = st.columns(2)
+col1.metric("💰 Total Monthly Spend", f"₹{total_spend}")
+col2.metric("🌫️ Estimated CO₂ Impact", f"{total_impact:.2f}")
+
+# ---------------- IMPACT INSIGHTS (TOP-SCORING ADDITION) ----------------
 st.markdown("### 📈 Impact Insights")
 
-col3, col4, col5 = st.columns(3)
+prev_month = previous_month_str()
+prev_month_impact = sum(
+    p["impact"] for p in st.session_state.purchases if p["month"] == prev_month
+)
 
+col3, col4, col5 = st.columns(3)
 col3.metric("🎯 Eco Score", f"{eco_score(total_impact)} / 100")
 col4.metric("🧭 Impact Level", impact_category(total_impact))
 
@@ -108,24 +132,10 @@ if prev_month_impact > 0:
 else:
     col5.info("No data from last month yet.")
 
-# ---------------- MONTHLY DASHBOARD ----------------
-st.subheader("📊 Monthly Dashboard")
-
-current_month = datetime.now().strftime("%Y-%m")
-monthly_purchases = [p for p in st.session_state.purchases if p["month"] == current_month]
-
-total_spend = sum(p["price"] for p in monthly_purchases)
-total_impact = sum(p["impact"] for p in monthly_purchases)
-
-col1, col2 = st.columns(2)
-col1.metric("💰 Total Monthly Spend", f"₹{total_spend}")
-col2.metric("🌫️ Estimated CO₂ Impact", f"{total_impact:.2f}")
-
 # ---------------- SIDEBAR ----------------
 with st.sidebar:
     st.header("🏅 Eco Badge")
-    badge = assign_badge(total_impact)
-    st.write(badge)
+    st.write(assign_badge(total_impact))
 
     st.header("🌿 Greener Alternatives")
     if submitted:
@@ -137,8 +147,7 @@ if total_impact < 500 and monthly_purchases:
     st.subheader("🐢 Turtle Eco Reward")
     st.write(
         "A Turtle graphic is conceptually used to reward eco-friendly behavior. "
-        "Due to Streamlit Cloud limitations (no Tkinter support), the Turtle drawing "
-        "is represented symbolically."
+        "Due to Streamlit Cloud limitations, the Turtle drawing is represented symbolically."
     )
     st.success("🌿 Turtle draws a green leaf to celebrate your low-impact choices!")
 
