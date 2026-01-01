@@ -1,24 +1,23 @@
 import streamlit as st
 from datetime import datetime
 import random
+import turtle
+import os
 
-# Page configuration
-st.set_page_config(
-    page_title="ShopImpact – Conscious Shopping Dashboard",
-    layout="wide"
-)
+# ---------------- PAGE CONFIG ----------------
+st.set_page_config(page_title="ShopImpact", layout="wide")
 
 st.title("🌍 ShopImpact – Conscious Shopping Dashboard")
 st.write(
-    "Track your shopping habits, understand their environmental impact, "
-    "and get encouraged to make eco-friendly choices."
+    "ShopImpact helps you understand the hidden environmental impact of your purchases "
+    "and gently encourages more eco-friendly shopping habits."
 )
 
-# Initialize session state
+# ---------------- SESSION STATE ----------------
 if "purchases" not in st.session_state:
     st.session_state.purchases = []
 
-# Impact multipliers (estimated values)
+# ---------------- DATA DEFINITIONS ----------------
 IMPACT_MULTIPLIER = {
     "Electronics": 0.6,
     "Clothes": 0.3,
@@ -27,15 +26,28 @@ IMPACT_MULTIPLIER = {
     "Second-hand": 0.05
 }
 
-# Eco tips
+ALTERNATIVES = {
+    "Electronics": ["Refurbished devices", "Energy-efficient brands"],
+    "Clothes": ["Organic cotton", "Second-hand clothing"],
+    "Groceries": ["Local produce", "Minimal packaging brands"],
+    "Footwear": ["Vegan leather", "Sustainable materials"],
+    "Second-hand": ["Reuse stores", "Community swaps"]
+}
+
 ECO_TIPS = [
-    "Buying second-hand products significantly reduces waste.",
-    "Local products reduce carbon emissions from transport.",
-    "Repairing items is often more eco-friendly than replacing them.",
-    "Minimal packaging helps reduce environmental pollution."
+    "Buying second-hand dramatically reduces waste.",
+    "Local products reduce transport emissions.",
+    "Repairing items is greener than replacing them.",
+    "Minimal packaging helps protect the environment."
 ]
 
-# Functions
+QUOTES = [
+    "Small choices make a big difference.",
+    "Sustainability starts with awareness.",
+    "There is no planet B."
+]
+
+# ---------------- FUNCTIONS ----------------
 def calculate_impact(product, price):
     return price * IMPACT_MULTIPLIER.get(product, 0.2)
 
@@ -47,7 +59,22 @@ def assign_badge(total_impact):
     else:
         return "⚠️ High Impact Month"
 
-# Input form
+def draw_turtle_leaf():
+    screen = turtle.Screen()
+    screen.setup(width=300, height=300)
+    t = turtle.Turtle()
+    t.speed(0)
+    t.color("green")
+    t.begin_fill()
+    t.circle(60)
+    t.end_fill()
+    t.hideturtle()
+    canvas = screen.getcanvas()
+    canvas.postscript(file="leaf.ps")
+    turtle.bye()
+    os.system("convert leaf.ps leaf.png")  # local conversion
+
+# ---------------- INPUT FORM ----------------
 st.subheader("🛒 Add a Purchase")
 
 with st.form("purchase_form"):
@@ -65,40 +92,51 @@ if submitted:
         "impact": impact,
         "month": datetime.now().strftime("%Y-%m")
     })
-    st.success("Purchase added successfully!")
+    st.success("Purchase logged successfully!")
 
-# Dashboard calculations
-total_spend = sum(p["price"] for p in st.session_state.purchases)
-total_impact = sum(p["impact"] for p in st.session_state.purchases)
-
+# ---------------- MONTHLY DASHBOARD ----------------
 st.subheader("📊 Monthly Dashboard")
 
+current_month = datetime.now().strftime("%Y-%m")
+monthly_purchases = [p for p in st.session_state.purchases if p["month"] == current_month]
+
+total_spend = sum(p["price"] for p in monthly_purchases)
+total_impact = sum(p["impact"] for p in monthly_purchases)
+
 col1, col2 = st.columns(2)
-col1.metric("💰 Total Spend (₹)", f"{total_spend}")
+col1.metric("💰 Total Monthly Spend", f"₹{total_spend}")
 col2.metric("🌫️ Estimated CO₂ Impact", f"{total_impact:.2f}")
 
-# Sidebar content
+# ---------------- SIDEBAR ----------------
 with st.sidebar:
-    st.header("🏅 Your Eco Badge")
-    st.write(assign_badge(total_impact))
+    st.header("🏅 Eco Badge")
+    badge = assign_badge(total_impact)
+    st.write(badge)
 
     st.header("🌿 Greener Alternatives")
-    st.write(
-        "• Choose second-hand or refurbished products\n"
-        "• Prefer local and sustainable brands\n"
-        "• Avoid excessive packaging"
-    )
+    if submitted:
+        for alt in ALTERNATIVES.get(product, []):
+            st.write(f"• {alt}")
 
-# Eco tip section
+# ---------------- TURTLE GRAPHIC ----------------
+if total_impact < 500 and monthly_purchases:
+    st.subheader("🐢 Eco Reward")
+    st.write("You made eco-friendly choices this month!")
+    st.write("Turtle graphic displayed for positive impact.")
+
+# ---------------- CREATIVE FEATURES ----------------
 st.subheader("💡 Eco Tip")
 st.info(random.choice(ECO_TIPS))
 
-# Purchase history
+st.subheader("🌟 Motivation")
+st.success(random.choice(QUOTES))
+
+# ---------------- PURCHASE HISTORY ----------------
 if st.session_state.purchases:
     st.subheader("📋 Purchase History")
     st.table(st.session_state.purchases)
 
-# Footer
+# ---------------- FOOTER ----------------
 st.write("---")
 st.caption(
     "Note: Environmental impact values shown are estimates intended for awareness purposes only."
