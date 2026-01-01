@@ -1,16 +1,14 @@
 import streamlit as st
 from datetime import datetime
 import random
-import turtle
-import os
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(page_title="ShopImpact", layout="wide")
 
 st.title("🌍 ShopImpact – Conscious Shopping Dashboard")
 st.write(
-    "ShopImpact helps you understand the hidden environmental impact of your purchases "
-    "and gently encourages more eco-friendly shopping habits."
+    "ShopImpact helps you understand the environmental impact of your purchases "
+    "and encourages eco-friendly shopping through awareness and rewards."
 )
 
 # ---------------- SESSION STATE ----------------
@@ -59,21 +57,6 @@ def assign_badge(total_impact):
     else:
         return "⚠️ High Impact Month"
 
-def draw_turtle_leaf():
-    screen = turtle.Screen()
-    screen.setup(width=300, height=300)
-    t = turtle.Turtle()
-    t.speed(0)
-    t.color("green")
-    t.begin_fill()
-    t.circle(60)
-    t.end_fill()
-    t.hideturtle()
-    canvas = screen.getcanvas()
-    canvas.postscript(file="leaf.ps")
-    turtle.bye()
-    os.system("convert leaf.ps leaf.png")  # local conversion
-
 # ---------------- INPUT FORM ----------------
 st.subheader("🛒 Add a Purchase")
 
@@ -118,11 +101,15 @@ with st.sidebar:
         for alt in ALTERNATIVES.get(product, []):
             st.write(f"• {alt}")
 
-# ---------------- TURTLE GRAPHIC ----------------
+# ---------------- TURTLE VISUAL SIMULATION ----------------
 if total_impact < 500 and monthly_purchases:
-    st.subheader("🐢 Eco Reward")
-    st.write("You made eco-friendly choices this month!")
-    st.write("Turtle graphic displayed for positive impact.")
+    st.subheader("🐢 Turtle Eco Reward")
+    st.write(
+        "A Turtle graphic is conceptually used to reward eco-friendly behavior. "
+        "Due to Streamlit Cloud limitations (no Tkinter support), the Turtle drawing "
+        "is represented symbolically."
+    )
+    st.success("🌿 Turtle draws a green leaf to celebrate your low-impact choices!")
 
 # ---------------- CREATIVE FEATURES ----------------
 st.subheader("💡 Eco Tip")
@@ -139,5 +126,5 @@ if st.session_state.purchases:
 # ---------------- FOOTER ----------------
 st.write("---")
 st.caption(
-    "Note: Environmental impact values shown are estimates intended for awareness purposes only."
+    "Note: Environmental impact values are estimates intended for awareness purposes only."
 )
