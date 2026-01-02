@@ -3,17 +3,23 @@ from datetime import datetime
 import random
 
 # ---------------- PAGE CONFIG ----------------
-st.set_page_config(page_title="ShopImpact", layout="wide")
+st.set_page_config(
+    page_title="ShopImpact – Conscious Shopping Dashboard",
+    layout="wide"
+)
 
 st.title("🌍 ShopImpact – Conscious Shopping Dashboard")
 st.write(
-    "ShopImpact helps you understand the environmental impact of your purchases "
-    "and encourages eco-friendly shopping through awareness and rewards."
+    "ShopImpact helps users understand the environmental impact of their purchases "
+    "and explores how adopting greener alternatives can significantly reduce CO₂ emissions."
 )
 
 # ---------------- SESSION STATE ----------------
 if "purchases" not in st.session_state:
     st.session_state.purchases = []
+
+if "streak" not in st.session_state:
+    st.session_state.streak = 0
 
 # ---------------- DATA DEFINITIONS ----------------
 IMPACT_MULTIPLIER = {
@@ -33,17 +39,19 @@ ALTERNATIVES = {
 }
 
 ECO_TIPS = [
-    "Buying second-hand dramatically reduces waste.",
-    "Local products reduce transport emissions.",
-    "Repairing items is greener than replacing them.",
-    "Minimal packaging helps protect the environment."
+    "Buying second-hand can reduce emissions by more than 80%.",
+    "Local products minimize transport-related CO₂.",
+    "Repairing instead of replacing extends product life.",
+    "Minimal packaging significantly reduces waste."
 ]
 
 QUOTES = [
-    "Small choices make a big difference.",
-    "Sustainability starts with awareness.",
-    "There is no planet B."
+    "Small daily actions lead to big environmental change.",
+    "Sustainability is not a sacrifice, it's a smarter choice.",
+    "There is no Planet B."
 ]
+
+GREEN_REDUCTION_FACTOR = 0.35  # 35% reduction when green alternatives are adopted
 
 # ---------------- FUNCTIONS ----------------
 def calculate_impact(product, price):
@@ -75,12 +83,16 @@ def previous_month_str():
         return f"{now.year - 1}-12"
     return f"{now.year}-{now.month - 1:02d}"
 
+def projected_green_impact(current_impact, adoption_rate):
+    reduced = current_impact * adoption_rate * GREEN_REDUCTION_FACTOR
+    return round(current_impact - reduced, 2)
+
 # ---------------- INPUT FORM ----------------
-st.subheader("🛒 Add a Purchase")
+st.subheader("🛒 Log a Purchase")
 
 with st.form("purchase_form"):
-    product = st.selectbox("Product Type", list(IMPACT_MULTIPLIER.keys()))
-    brand = st.text_input("Brand Name")
+    product = st.selectbox("Product Category", list(IMPACT_MULTIPLIER.keys()))
+    brand = st.text_input("Brand Name (optional)")
     price = st.number_input("Price (₹)", min_value=0)
     submitted = st.form_submit_button("Add Purchase")
 
@@ -91,12 +103,19 @@ if submitted:
         "brand": brand,
         "price": price,
         "impact": impact,
-        "month": datetime.now().strftime("%Y-%m")
+        "month": datetime.now().strftime("%Y-%m"),
+        "date": datetime.now().date()
     })
-    st.success("Purchase logged successfully!")
+
+    if product == "Second-hand":
+        st.session_state.streak += 1
+    else:
+        st.session_state.streak = max(0, st.session_state.streak - 1)
+
+    st.success("Purchase added successfully!")
 
 # ---------------- MONTHLY DASHBOARD ----------------
-st.subheader("📊 Monthly Dashboard")
+st.subheader("📊 Monthly Impact Overview")
 
 current_month = datetime.now().strftime("%Y-%m")
 monthly_purchases = [
@@ -106,57 +125,86 @@ monthly_purchases = [
 total_spend = sum(p["price"] for p in monthly_purchases)
 total_impact = sum(p["impact"] for p in monthly_purchases)
 
-col1, col2 = st.columns(2)
-col1.metric("💰 Total Monthly Spend", f"₹{total_spend}")
-col2.metric("🌫️ Estimated CO₂ Impact", f"{total_impact:.2f}")
+col1, col2, col3 = st.columns(3)
+col1.metric("💰 Total Spend", f"₹{total_spend}")
+col2.metric("🌫️ Estimated CO₂ Impact", f"{total_impact:.2f} units")
+col3.metric("🎯 Eco Score", f"{eco_score(total_impact)} / 100")
 
-# ---------------- IMPACT INSIGHTS (TOP-SCORING ADDITION) ----------------
-st.markdown("### 📈 Impact Insights")
-
+# ---------------- TREND INSIGHTS ----------------
 prev_month = previous_month_str()
 prev_month_impact = sum(
     p["impact"] for p in st.session_state.purchases if p["month"] == prev_month
 )
 
-col3, col4, col5 = st.columns(3)
-col3.metric("🎯 Eco Score", f"{eco_score(total_impact)} / 100")
-col4.metric("🧭 Impact Level", impact_category(total_impact))
-
 if prev_month_impact > 0:
     delta = total_impact - prev_month_impact
-    trend = "lower" if delta < 0 else "higher"
-    col5.info(
-        f"This month’s impact is {trend} than last month "
-        f"by {abs(round(delta, 2))} units."
+    st.info(
+        f"Compared to last month, your CO₂ impact is "
+        f"{'lower' if delta < 0 else 'higher'} by {abs(round(delta, 2))} units."
     )
+
+# ---------------- GREEN TRANSITION SIMULATION ----------------
+st.subheader("🌱 Green Transition Scenario Simulation")
+
+st.write(
+    "This simulation compares your **current shopping impact** with a **projected scenario** "
+    "where a portion of purchases are shifted to greener alternatives."
+)
+
+adoption_percentage = st.slider(
+    "Percentage of purchases shifted to green alternatives",
+    0, 100, 40, step=10
+)
+
+adoption_rate = adoption_percentage / 100
+green_impact = projected_green_impact(total_impact, adoption_rate)
+reduction = total_impact - green_impact
+
+comparison_data = {
+    "Scenario": ["Current Practices", "After Green Transition"],
+    "Estimated CO₂ Impact (units)": [total_impact, green_impact]
+}
+
+st.bar_chart(
+    data=comparison_data,
+    x="Scenario",
+    y="Estimated CO₂ Impact (units)"
+)
+
+st.success(
+    f"🌍 Projected CO₂ Reduction: **{reduction:.2f} units** "
+    f"({adoption_percentage}% green adoption)"
+)
+
+# ---------------- GAMIFICATION ----------------
+st.subheader("🎮 Green Progress & Rewards")
+
+reduction_percent = (reduction / total_impact * 100) if total_impact > 0 else 0
+st.progress(min(int(reduction_percent), 100))
+
+if reduction_percent >= 40:
+    st.success("🏆 Green Champion Badge Unlocked!")
+elif reduction_percent >= 20:
+    st.info("🥈 Eco Improver Badge Earned!")
+elif reduction_percent > 0:
+    st.warning("🥉 First Green Step Taken!")
 else:
-    col5.info("No data from last month yet.")
+    st.write("🌿 Make greener choices to unlock rewards.")
+
+st.metric("🔥 Sustainable Choice Streak", f"{st.session_state.streak} actions")
 
 # ---------------- SIDEBAR ----------------
 with st.sidebar:
-    st.header("🏅 Eco Badge")
+    st.header("🏅 Monthly Badge")
     st.write(assign_badge(total_impact))
 
-    st.header("🌿 Greener Alternatives")
+    st.header("🌿 Suggested Greener Alternatives")
     if submitted:
         for alt in ALTERNATIVES.get(product, []):
             st.write(f"• {alt}")
 
-# ---------------- TURTLE VISUAL SIMULATION ----------------
-if total_impact < 500 and monthly_purchases:
-    st.subheader("🐢 Turtle Eco Reward")
-    st.write(
-        "A Turtle graphic is conceptually used to reward eco-friendly behavior. "
-        "Due to Streamlit Cloud limitations, the Turtle drawing is represented symbolically."
-    )
-    st.success("🌿 Turtle draws a green leaf to celebrate your low-impact choices!")
-
-# ---------------- CREATIVE FEATURES ----------------
-st.subheader("💡 Eco Tip")
-st.info(random.choice(ECO_TIPS))
-
-st.subheader("🌟 Motivation")
-st.success(random.choice(QUOTES))
+    st.header("💡 Eco Tip")
+    st.info(random.choice(ECO_TIPS))
 
 # ---------------- PURCHASE HISTORY ----------------
 if st.session_state.purchases:
@@ -166,5 +214,6 @@ if st.session_state.purchases:
 # ---------------- FOOTER ----------------
 st.write("---")
 st.caption(
-    "Note: Environmental impact values are estimates intended for awareness purposes only."
+    "Disclaimer: CO₂ values shown are estimates for educational and awareness purposes only. "
+    "The green transition scenario represents a modeled projection, not real-world measured data."
 )
