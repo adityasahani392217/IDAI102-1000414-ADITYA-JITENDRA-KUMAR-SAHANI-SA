@@ -70,7 +70,6 @@ This project addresses that issue by:
 | Action | XP |
 |------|----|
 | Log a purchase | +10 XP |
-| Log low-impact purchase | +20 XP bonus |
 
 ### 🏅 Badge Rules
 | Badge | Condition |
