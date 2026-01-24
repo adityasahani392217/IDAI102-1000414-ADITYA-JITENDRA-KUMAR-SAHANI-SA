@@ -199,7 +199,6 @@ Screenshots below show the finalized interface used for deployment.
 Testing was conducted using 15 unique purchase scenarios to validate badge unlocking rules, point accumulation accuracy, and overall dashboard calculations.
 
 ![Testing](assets/stage4/testing_1.png)  
-![Badge System](assets/stage4/badges.png)  
 
 In addition to functional testing, informal usability testing was carried out with peers to assess clarity of navigation, readability of metrics, and overall user experience. Based on this feedback, badge visuals were simplified for better recognition, and a weekly impact chart was introduced to improve trend visibility and user understanding.
 
@@ -246,7 +245,7 @@ streamlit run app.py
 
 ## 🌐 Live Web App Link
 The deployed application is accessible at: 
-[Live Web App Link](https://idai102-1000414-aditya-jitendra-kumar-sahani-shopimpact.streamlit.app/)
+[Streamlit Live Web App Access Link ](https://idai102-1000414-aditya-jitendra-kumar-sahani-shopimpact.streamlit.app/)
 
 ### 🌱 Ethical & Social Considerations
 * $CO_{2}$ values are simplified estimates for educational purposes.
@@ -258,8 +257,8 @@ ShopImpact demonstrates the complete lifecycle of a Python-based interactive app
 
 ### 📚 References
 
-1. Streamlit Documentation. Available at: https://docs.streamlit.io/
-2. Python Software Foundation. *Python 3 Documentation*. Available at: https://docs.python.org/3/
+1. [Streamlit Documentation](https://docs.streamlit.io/)
+2. [Python Software Foundation](https://docs.python.org/3/)
 
 
 **Track • Reflect • Improve • Shop Responsibly 🌍**
