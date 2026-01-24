@@ -131,6 +131,8 @@ IDAI102-1000414-ADITYA-JITENDRA-KUMAR-SAHANI-SA/
 ├── requirements.txt        # Python dependencies
 ├── README.md               # Project documentation
 │
+├── interactive links       # Interactive Links (github & streamlit)
+│   └── README.md           
 ├── assets/
 │   ├── stage1/             # Planning & design (wireframes, mindmaps)
 │   │   ├── mindmap.png
