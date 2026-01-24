@@ -326,7 +326,7 @@ def main_app():
             
             st.subheader("🏅 Badges")
             badges = check_badges(st.session_state['user_data']['purchases'], xp)
-            all_b = ["🌱 Early Bird", "📅 Consistency King", "🛡️ Eco Warrior", "👑 Master"]
+            all_b = ["🌱 Eco Saver","♻️ Conscious Consumer","🛡️ Eco Warrior","🔥 Sustainability Streaker","🏆 Green Champion"]
             with st.container(border=True):
                 bc1, bc2 = st.columns(2)
                 for i, b in enumerate(all_b):
