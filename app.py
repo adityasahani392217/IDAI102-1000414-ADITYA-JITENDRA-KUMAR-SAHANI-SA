@@ -124,15 +124,47 @@ def update_streak(current_date):
             st.session_state['user_data']['streak'] = 1
     st.session_state['user_data']['last_log_date'] = current_date
 
-def check_badges(purchases, xp):
+def check_badges(purchases):
     unlocked = []
-    if len(purchases) >= 1: unlocked.append("🌱 Early Bird")
-    if len(purchases) >= 5: unlocked.append("📅 Consistency King")
-    if xp >= 250: unlocked.append("👑 Master")
-    if purchases:
-        avg = sum(p['impact'] for p in purchases) / len(purchases)
-        if avg < 5.0 and len(purchases) > 2: unlocked.append("🛡️ Eco Warrior")
+
+    if not purchases:
+        return unlocked
+
+    df = pd.DataFrame(purchases)
+
+    total_impact = df['impact'].sum()
+    avg_impact = df['impact'].mean()
+
+    # % of low-impact purchases
+    low_impact_count = df[df['impact'] <= 5.0].shape[0]
+    low_impact_ratio = low_impact_count / len(df)
+
+    # 🌱 Eco Saver – overall low footprint
+    if total_impact <= 50:
+        unlocked.append("🌱 Eco Saver")
+
+    # ♻️ Conscious Consumer – majority low-impact choices
+    if low_impact_ratio >= 0.6:
+        unlocked.append("♻️ Conscious Consumer")
+
+    # 🛡️ Eco Warrior – consistently efficient purchases
+    if avg_impact <= 4.0 and len(df) >= 3:
+        unlocked.append("🛡️ Eco Warrior")
+
+    # 🔥 Sustainability Streaker – streak without high-impact items
+    streak = st.session_state['user_data']['streak']
+    if streak >= 5:
+        unlocked.append("🔥 Sustainability Streaker")
+
+    # 🏆 Green Champion – improvement over time
+    if len(df) >= 6:
+        first_half = df.iloc[:len(df)//2]['impact'].mean()
+        second_half = df.iloc[len(df)//2:]['impact'].mean()
+        if second_half < first_half:
+            unlocked.append("🏆 Green Champion")
+
     return unlocked
+
 
 def draw_turtle_avatar(level):
     fig, ax = plt.subplots(figsize=(3, 3))
