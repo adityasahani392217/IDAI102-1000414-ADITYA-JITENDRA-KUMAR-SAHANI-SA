@@ -65,21 +65,24 @@ This project addresses that issue by:
 ---
 
 ## 🏆 Gamification System (Implemented Logic)
+The gamification system in ShopImpact is intentionally designed to reward sustainable behavior rather than increased consumption. Badges and progress are unlocked based on low environmental impact, improvement over time, and mindful purchasing choices, ensuring ethical alignment with sustainability goals.
 
 ### 🎯 XP Rules
 | Action | XP |
 |------|----|
 | Log a purchase | +10 XP |
+| Choose a low-impact category | Bonus XP |
 
 ### 🏅 Badge Rules
 | Badge | Condition |
 |-----|----------|
-| 🌱 Early Bird | First purchase logged |
-| 📅 Consistency King | 5 or more purchases |
-| 🛡️ Eco Warrior | Low average impact |
-| 👑 Master | XP ≥ 250 |
+| 🌱 Eco Saver| Maintain a low total CO₂ footprint |
+| ♻️ Conscious Consumer | Majority of purchases are low-impact |
+| 🛡️ Eco Warrior | Consistently low average impact |
+| 🔥 Sustainability Streaker | Maintain multiple consecutive low-impact days |
+| 🏆 Green Champion | Demonstrate reduction in impact over time |
 
-> *Note: Badge and reward logic is rule-based and implemented for educational demonstration.*
+> ***Design Note:** Badges are awarded for better choices, not more purchases, reinforcing responsible consumption rather than encouraging increased buying behavior.*
 
 ---
 
@@ -201,6 +204,9 @@ Testing was conducted using 15 unique purchase scenarios to validate badge unloc
 
 ![Testing](assets/stage4/testing_1.png)  
 
+During testing, the badge logic was refined to ensure rewards were based on environmental efficiency and improvement rather than purchase quantity, aligning the gamification system with sustainability principles.
+
+![Badges](assets/stage4/badges.png) 
 In addition to functional testing, informal usability testing was carried out with peers to assess clarity of navigation, readability of metrics, and overall user experience. Based on this feedback, badge visuals were simplified for better recognition, and a weekly impact chart was introduced to improve trend visibility and user understanding.
 
 ### 🚀 Stage 5: Deployment
