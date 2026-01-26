@@ -237,8 +237,11 @@ def login_page():
                 p = st.text_input("Password", type="password", key="l_p")
                 if st.button("🚀 Log In", use_container_width=True):
                     if u in st.session_state['users'] and st.session_state['users'][u] == p:
-                        st.session_state['current_user'] = u; st.rerun()
-                    else: st.error("Invalid credentials.")
+                        st.session_state['current_user'] = u
+                        st.rerun()
+                    else:
+                        st.error("❌ Invalid username or password.")
+                        st.info("👉 Don’t have an account? Create one using the **Sign Up** tab.")
             with tab2:
                 nu = st.text_input("New Username", key="n_u")
                 np = st.text_input("New Password", type="password", key="n_p")
@@ -276,8 +279,6 @@ def main_app():
         # 2. Random Eco Tip (Always visible)
         st.caption("💡 **Daily Tip:**")
         st.info(random.choice(ECO_TIPS))
-        
-        st.divider()
         st.caption("✨ **Motivation:**")
         st.success(random.choice(MOTIVATION_QUOTES))
         st.divider()
