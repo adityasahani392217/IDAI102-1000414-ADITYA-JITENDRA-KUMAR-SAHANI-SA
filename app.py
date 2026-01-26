@@ -65,6 +65,20 @@ ECO_TIPS = [
     "Bamboo grows 10x faster than trees and absorbs more CO2!"
 ]
 
+MOTIVATION_QUOTES = [
+    "🌍 Small steps today create a greener tomorrow.",
+    "♻️ You don’t need to be perfect to make a difference.",
+    "🌱 Every sustainable choice counts.",
+    "💚 Progress, not perfection, builds a better planet.",
+    "🐢 Slow and mindful choices win the sustainability race.",
+    "🌎 The future depends on what you buy today.",
+    "✨ Conscious shopping is a form of self-respect for Earth.",
+    "🌿 Sustainability starts with awareness.",
+    "🛍️ Buy less, choose better, make it last.",
+    "🌞 Your choices today shape tomorrow’s world.",
+    "🍃 Even small reductions create big impact over time."
+]
+
 XP_PER_LOG = 10
 XP_BONUS_LOW_IMPACT = 20
 LEVEL_THRESHOLDS = {1: 0, 2: 100, 3: 250, 4: 500, 5: 1000}
@@ -263,6 +277,9 @@ def main_app():
         st.caption("💡 **Daily Tip:**")
         st.info(random.choice(ECO_TIPS))
         
+        st.divider()
+        st.caption("✨ **Motivation:**")
+        st.success(random.choice(MOTIVATION_QUOTES))
         st.divider()
         if st.button("Logout"):
             st.session_state['current_user'] = None; st.rerun()
