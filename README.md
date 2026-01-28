@@ -217,41 +217,40 @@ The finalized application was deployed on **Streamlit Cloud**, ensuring accessib
 
 ---
 
-## 🚀Installation & Deployment
+## 🔧 Integration Details & 🚀 Deployment Instructions
+
+### 🔗 Technology Integration
+
+ShopImpact integrates multiple Python libraries and modules to deliver a seamless, interactive user experience:
+
+- **Streamlit** – Used as the primary web framework to build the interactive dashboard, manage layouts, and handle real-time UI updates.
+- **Pandas** – Manages purchase data storage, aggregation, and export functionality using structured data frames.
+- **Matplotlib** – Generates visual elements such as weekly impact charts and the symbolic turtle avatar.
+- **Datetime** – Handles purchase dates, streak calculations, and weekly time-based analysis.
+- **Random** – Provides dynamic eco tips and motivational messages to enhance user engagement.
+- **Session State** – Maintains user authentication status, purchase history, streaks, and gamification data across interactions.
+
+This modular integration ensures that the application remains scalable, readable, and easy to maintain.
+
+---
+
+## 🚀 Deployment Instructions
 
 ### Prerequisites
-- Python 3.8 or higher
+- Python 3.8 or higher installed
 - pip package manager
-- Internet connection
+- Active internet connection
 
-### Local Execution
+---
 
-Clone the repository:
+### Local Deployment
+
+Clone the GitHub repository:
 
 ```bash
 git clone https://github.com/adityasahani392217/IDAI102-1000414-ADITYA-JITENDRA-KUMAR-SAHANI-SA.git
 cd IDAI102-1000414-ADITYA-JITENDRA-KUMAR-SAHANI-SA
 ```
-
-#### Install required dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-#### Run the application:
-
-```bash
-streamlit run app.py
-```
-
-### Streamlit Cloud Deployment:
-1. Push your project to GitHub 
-2. Go to Streamlit Cloud (streamlit.io/cloud)
-3. Sign in with your GitHub account
-4. Click "New app" and select your repository
-5. Set the main file path to `app.py`
-6. Click "Deploy" - Streamlit Cloud will handle the rest
 
 ## 🌐 Live Web App Link
 The deployed application is accessible at: 
