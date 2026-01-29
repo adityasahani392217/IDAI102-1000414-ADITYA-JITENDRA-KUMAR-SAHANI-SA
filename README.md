@@ -212,12 +212,9 @@ During testing, the badge logic was refined to ensure rewards were based on envi
 
 In addition to functional testing, informal usability testing was carried out with peers to assess clarity of navigation, readability of metrics, and overall user experience. Based on this feedback, badge visuals were simplified for better recognition, and a weekly impact chart was introduced to improve trend visibility and user understanding.
 
-### 🚀 Stage 5: Deployment
+### 🚀 Stage 5 : 🔧 Integration Details & 🚀 Deployment Instructions
+
 The finalized application was deployed on **Streamlit Cloud**, ensuring accessibility for users across different devices. Dependencies were managed via `requirements.txt` to guarantee a consistent runtime environment.
-
----
-
-## 🔧 Integration Details & 🚀 Deployment Instructions
 
 ### 🔗 Technology Integration
 
@@ -232,16 +229,12 @@ ShopImpact integrates multiple Python libraries and modules to deliver a seamles
 
 This modular integration ensures that the application remains scalable, readable, and easy to maintain.
 
----
-
 ## 🚀 Deployment Instructions
 
 ### Prerequisites
 - Python 3.8 or higher installed
 - pip package manager
 - Active internet connection
-
----
 
 ### Local Deployment
 
