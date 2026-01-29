@@ -294,7 +294,7 @@ def main_app():
         m1, m2, m3, m4 = st.columns(4)
         with m1: st.container(border=True).metric("Current Level", f"{lvl}")
         with m2: st.container(border=True).metric("Items Logged", len(st.session_state['user_data']['purchases']))
-        with m3: st.container(border=True).metric("Total Impact", f"{total_co2:.1f} kg")
+        with m3: st.container(border=True).metric("Total Impact of CO₂", f"{total_co2:.1f} kg")
         with m4: st.container(border=True).metric("Streak", f"🔥 {streak_count} Days")
         
         c1, c2 = st.columns([1.5, 1])
