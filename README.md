@@ -214,20 +214,25 @@ In addition to functional testing, informal usability testing was carried out wi
 
 ### 🚀 Stage 5 : 🔧 Integration Details & 🚀 Deployment Instructions
 
-The finalized application was deployed on **Streamlit Cloud**, ensuring accessibility for users across different devices. Dependencies were managed via `requirements.txt` to guarantee a consistent runtime environment.
+The finalized **ShopImpact** application was fully integrated and deployed during this stage. All functional components, visual elements, and configuration settings were combined into a single cohesive system and hosted on **Streamlit Cloud**, ensuring public accessibility across devices. Dependencies were managed using `requirements.txt` to guarantee a consistent runtime environment during both local execution and cloud deployment.
+
+---
 
 ### 🔗 Technology Integration
 
-ShopImpact integrates multiple Python libraries and modules to deliver a seamless, interactive user experience:
+ShopImpact integrates multiple Python libraries and Streamlit features to deliver a smooth, interactive, and user-friendly experience:
 
-- **Streamlit** – Used as the primary web framework to build the interactive dashboard, manage layouts, and handle real-time UI updates.
-- **Pandas** – Manages purchase data storage, aggregation, and export functionality using structured data frames.
-- **Matplotlib** – Generates visual elements such as weekly impact charts and the symbolic turtle avatar.
-- **Datetime** – Handles purchase dates, streak calculations, and weekly time-based analysis.
-- **Random** – Provides dynamic eco tips and motivational messages to enhance user engagement.
-- **Session State** – Maintains user authentication status, purchase history, streaks, and gamification data across interactions.
+- **Streamlit** – Serves as the primary web framework, handling layout structure, user inputs, dashboards, sidebar panels, authentication flow, and real-time UI updates.
+- **Pandas** – Manages structured storage of purchase history, impact calculations, aggregation of weekly data, and CSV export functionality.
+- **Matplotlib** – Used to generate weekly impact charts and render the symbolic turtle avatar for visual gamification.
+- **Datetime** – Handles purchase dates, streak tracking, and time-based analysis.
+- **Random** – Provides dynamic eco tips and motivational quotes to enhance user engagement.
+- **Session State** – Maintains user login status, purchase history, XP, levels, streaks, badges, and UI persistence across interactions.
+- **TOML Configuration** – External configuration is handled using a `.toml` file to manage theme colors, UI components, and humanized motivational messages without hardcoding values.
 
-This modular integration ensures that the application remains scalable, readable, and easy to maintain.
+This modular integration approach ensures the application remains readable, scalable, and easy to maintain.
+
+---
 
 ## 🚀 Deployment Instructions
 
@@ -236,7 +241,9 @@ This modular integration ensures that the application remains scalable, readable
 - pip package manager
 - Active internet connection
 
-### Local Deployment
+---
+
+### 💻 Local Deployment
 
 Clone the GitHub repository:
 
@@ -244,6 +251,33 @@ Clone the GitHub repository:
 git clone https://github.com/adityasahani392217/IDAI102-1000414-ADITYA-JITENDRA-KUMAR-SAHANI-SA.git
 cd IDAI102-1000414-ADITYA-JITENDRA-KUMAR-SAHANI-SA
 ```
+Install required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+Run the Streamlit application:
+
+```bash
+streamlit run app.py
+```
+
+Access the app in your browser at:
+
+```bash
+http://localhost:8501
+```
+
+### ☁️ Cloud Deployment (Streamlit Cloud)
+
+1) Push the complete project to GitHub :Visit https://streamlit.io/cloud
+2) Sign in using your GitHub account.
+3) Click “New app”.
+4) Select the ShopImpact GitHub repository.
+5) Set the main file path to: app.py
+6) Click Deploy.
+
+Streamlit Cloud automatically installs dependencies, applies the TOML configuration, and hosts the application with a public URL.
 
 ## 🌐 Live Web App Link
 The deployed application is accessible at: 
